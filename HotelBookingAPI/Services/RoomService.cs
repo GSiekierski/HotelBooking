@@ -10,7 +10,7 @@ namespace HotelBookingAPI.Services
         {
             // dane przykładowe
             _rooms.Add(new Room { Id = 1, Name = "Pokój jednoosobowy", Capacity = 1, PricePerNight = 150 });
-            _rooms.Add(new Room { Id = 2, Name = "Pokój dwuosobowy", Capacity = 2, PricePerNight = 250 });
+            _rooms.Add(new Room { Id = 2, Name = "Pokój dwuosobowy", Capacity = 2, PricePerNight = 250, IsAvailable=false });
         }
 
         public IEnumerable<Room> GetAll() => _rooms;

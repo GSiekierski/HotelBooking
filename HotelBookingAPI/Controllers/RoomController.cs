@@ -1,31 +1,65 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Google;
 using HotelBookingAPI.Models;
-using HotelBookingAPI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RoomController : ControllerBase
+public class RoomsController : ControllerBase
 {
-    private readonly RoomService _roomService;
+    private readonly HotelDbContext _context;
 
-    public RoomController(RoomService roomService)
+    public RoomsController(HotelDbContext context)
     {
-        _roomService = roomService;
+        _context = context;
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Room>> GetAll()
+    public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
     {
-        return Ok(_roomService.GetAll());
+        return await _context.Rooms.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Room> GetById(int id)
+    public async Task<ActionResult<Room>> GetRoom(int id)
     {
-        var room = _roomService.GetById(id);
+        var room = await _context.Rooms.FindAsync(id);
         if (room == null)
             return NotFound();
 
-        return Ok(room);
+        return room;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Room>> CreateRoom(Room room)
+    {
+        _context.Rooms.Add(room);
+        await _context.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetRoom), new { id = room.Id }, room);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateRoom(int id, Room room)
+    {
+        if (id != room.Id)
+            return BadRequest();
+
+        _context.Entry(room).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRoom(int id)
+    {
+        var room = await _context.Rooms.FindAsync(id);
+        if (room == null)
+            return NotFound();
+
+        _context.Rooms.Remove(room);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
     }
 }
