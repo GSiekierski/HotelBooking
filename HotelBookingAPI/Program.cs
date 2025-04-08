@@ -3,20 +3,29 @@ using HotelBookingAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var key = "this_is_a_super_secure_jwt_key_123456";
+var key = "_______________________________123456";
 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<RoomService>();
-builder.Services.AddSingleton<BookingService>();
+//builder.Services.AddSingleton<RoomService>();
+//builder.Services.AddSingleton<BookingService>();
 builder.Services.AddSingleton(new JwtService(key));
 builder.Services.AddSingleton<AuthService>();
+
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<PayUService>();
+
+builder.Services.AddDbContext<HotelDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -58,7 +67,11 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-
+builder.Services.AddSingleton<GoogleMapsService>(provider =>
+{
+    var apiKey = builder.Configuration["GoogleMapsApiKey"];
+    return new GoogleMapsService(apiKey);
+});
 
 builder.Services.AddAuthorization();
 
