@@ -72,6 +72,17 @@ builder.Services.AddSingleton<GoogleMapsService>(provider =>
     var apiKey = builder.Configuration["GoogleMapsApiKey"];
     return new GoogleMapsService(apiKey);
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 
 builder.Services.AddAuthorization();
 
@@ -83,6 +94,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors("AllowLocalhost");
+
 
 app.UseAuthentication();
 app.UseAuthorization();
