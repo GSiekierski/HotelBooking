@@ -76,3 +76,4 @@ npm install axios react-router-dom bootstrap jwt-decode
 npm install react-bootstrap bootstrap
 npm install @react-google-maps/api
 npm install react-leaflet leaflet
+npm start
