@@ -47,7 +47,6 @@ const App = () => {
         </nav>
 
         <Routes>
-          {/* Jeżeli użytkownik nie jest zalogowany, pokazujemy stronę logowania i rejestracji */}
           {!token ? (
             <>
               <Route path="/login" element={<Login onLogin={setToken} />} />
@@ -57,8 +56,8 @@ const App = () => {
             <>
               <Route path="/" element={<BookingList token={token} />} />
               <Route path="/create-booking" element={<BookingForm token={token} onBookingCreated={() => window.location.href = '/'} />} />
-              <Route path="/update-booking/:id" element={<BookingUpdate token={token} />} />  {/* Route for updating booking */}
-              <Route path="/map" element={<MapComponent token={token} />} />  {/* Nowa trasa z mapą */}
+              <Route path="/update-booking/:id" element={<BookingUpdate token={token} />} />
+              <Route path="/map" element={<MapComponent token={token} />} />
             </>
           )}
         </Routes>

@@ -71,6 +71,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 cd hotel-booking-frontend
+npm install
 npm install axios react-router-dom bootstrap jwt-decode
 npm install react-bootstrap bootstrap
 npm install @react-google-maps/api
