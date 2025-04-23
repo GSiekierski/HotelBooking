@@ -3,14 +3,20 @@ import axios from 'axios';
 
 const PaymentForm = () => {
   const createPayment = () => {
-    axios.get('https://localhost:7036/api/booking/create-payment')
-      .then(response => {
-        window.location.href = response.data.paymentLink; // Przekierowanie do strony płatności
-      })
-      .catch(error => {
-        console.error('Error creating payment:', error);
-      });
+    axios.get('https://localhost:7036/api/booking/create-payment', { responseType: 'text' })
+    .then(response => {
+      if (!response.data) {
+        console.error('No payment HTML returned.');
+        return;
+      }
+      
+      window.location.href = response.data;
+    })
+    .catch(error => {
+      console.error('Error creating payment:', error);
+    });
   };
+  
 
   return (
     <div className="container">
