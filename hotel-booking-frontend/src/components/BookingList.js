@@ -41,14 +41,18 @@ const BookingList = ({ token }) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        responseType: 'text'
       })
       .then((response) => {
-        const paymentLink = response.data.paymentLink;
-        if (paymentLink) {
-          window.open(paymentLink, '_blank');
-        } else {
-          alert('No payment link returned.');
+        if (!response.data || typeof response.data !== 'string') {
+          alert('No HTML returned.');
+          return;
         }
+  
+        const paymentWindow = window.open("", "_blank");
+        paymentWindow.document.open();
+        paymentWindow.document.write(response.data);
+        paymentWindow.document.close();
       })
       .catch((error) => {
         alert('Error creating payment.');
