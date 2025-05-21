@@ -20,7 +20,15 @@ builder.Services.AddSingleton(new JwtService(key));
 builder.Services.AddSingleton<AuthService>();
 
 builder.Services.AddHttpClient();
+<<<<<<< Updated upstream
 builder.Services.AddSingleton<PayUService>();
+=======
+builder.Services.AddHttpClient<PayUService>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    AllowAutoRedirect = false
+}); ;
+
+>>>>>>> Stashed changes
 
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

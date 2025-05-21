@@ -11,7 +11,11 @@ public class PayUService
 
     public PayUService(HttpClient httpClient)
     {
-        _httpClient = httpClient;
+        var handler = new HttpClientHandler
+        {
+            AllowAutoRedirect = false
+        };
+        _httpClient = new HttpClient(handler);
     }
     public async Task<string> GetAccessTokenAsync(string clientId, string clientSecret)
     {
@@ -68,7 +72,18 @@ public class PayUService
 
         var request = new HttpRequestMessage(HttpMethod.Post, url)
         {
+<<<<<<< Updated upstream
             Content = new StringContent(jsonData, Encoding.UTF8, "application/json")
+=======
+            Headers =
+        {
+            { "Authorization", $"Bearer {accessToken}" },
+            { "Accept", "application/json" }
+            //{ "Content-Type", "application/json" }
+
+        },
+            Content = jsonContent
+>>>>>>> Stashed changes
         };
 
         request.Headers.Add("Authorization", "Bearer " + accessToken);

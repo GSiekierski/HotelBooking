@@ -90,7 +90,6 @@ namespace HotelBookingAPI.Controllers
             return NoContent();
         }
 
-        // Pobieranie współrzędnych lokalizacji z Google Maps
         [HttpGet("location")]
         public async Task<IActionResult> GetLocationCoordinates([FromQuery] string location)
         {
