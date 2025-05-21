@@ -9,7 +9,11 @@ public class PayUService
 
     public PayUService(HttpClient httpClient)
     {
-        _httpClient = httpClient;
+        var handler = new HttpClientHandler
+        {
+            AllowAutoRedirect = false
+        };
+        _httpClient = new HttpClient(handler);
     }
 
     public async Task<string> GetAccessTokenAsync(string clientId, string clientSecret)
@@ -60,6 +64,18 @@ public class PayUService
         {
             Headers =
         {
+
+            Content = new StringContent(jsonData, Encoding.UTF8, "application/json")
+
+            Headers =
+        {
+            { "Authorization", $"Bearer {accessToken}" },
+            { "Accept", "application/json" }
+            //{ "Content-Type", "application/json" }
+
+        },
+            Content = jsonContent
+
             { "Authorization", $"Bearer {accessToken}" }
         },
             Content = jsonContent

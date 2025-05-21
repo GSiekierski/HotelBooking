@@ -20,8 +20,12 @@ builder.Services.AddSingleton(new JwtService(key));
 builder.Services.AddSingleton<AuthService>();
 
 builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<PayUService>();
 
+builder.Services.AddSingleton<PayUService>();
+builder.Services.AddHttpClient<PayUService>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    AllowAutoRedirect = false
+}); ;
 
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -50,7 +54,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Wprowadü token JWT: Bearer {token}"
+        Description = "Wprowad≈∏ token JWT: Bearer {token}"
     });
 
     options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
