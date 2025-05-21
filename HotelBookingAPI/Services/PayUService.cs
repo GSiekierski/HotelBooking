@@ -64,19 +64,10 @@ public class PayUService
         {
             Headers =
         {
-
-            Content = new StringContent(jsonData, Encoding.UTF8, "application/json")
-
-            Headers =
-        {
             { "Authorization", $"Bearer {accessToken}" },
             { "Accept", "application/json" }
             //{ "Content-Type", "application/json" }
 
-        },
-            Content = jsonContent
-
-            { "Authorization", $"Bearer {accessToken}" }
         },
             Content = jsonContent
         };
