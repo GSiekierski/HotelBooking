@@ -35,30 +35,29 @@ const BookingList = ({ token }) => {
       });
   };
 
-  const handleCreatePayment = () => {
-    axios
-      .get('https://localhost:7036/api/Booking/create-payment', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        responseType: 'text'
-      })
-      .then((response) => {
-        if (!response.data || typeof response.data !== 'string') {
-          alert('No HTML returned.');
-          return;
-        }
-  
-        const paymentWindow = window.open("", "_blank");
-        paymentWindow.document.open();
-        paymentWindow.document.write(response.data);
-        paymentWindow.document.close();
-      })
-      .catch((error) => {
-        alert('Error creating payment.');
-        console.error('Payment error:', error);
-      });
-  };
+const handleCreatePayment = () => {
+  axios
+    .get('https://localhost:7036/api/Booking/create-payment', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((response) => {
+      const paymentLink = response.data?.paymentLink;
+
+      if (!paymentLink) {
+        alert('Nie otrzymano linku do płatności.');
+        return;
+      }
+
+      window.open(paymentLink, '_blank');
+    })
+    .catch((error) => {
+      alert('Błąd podczas tworzenia płatności.');
+      console.error('Payment error:', error);
+    });
+};
+
 
   return (
     <div>
