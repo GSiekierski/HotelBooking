@@ -20,15 +20,12 @@ builder.Services.AddSingleton(new JwtService(key));
 builder.Services.AddSingleton<AuthService>();
 
 builder.Services.AddHttpClient();
-<<<<<<< Updated upstream
+
 builder.Services.AddSingleton<PayUService>();
-=======
 builder.Services.AddHttpClient<PayUService>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 {
     AllowAutoRedirect = false
 }); ;
-
->>>>>>> Stashed changes
 
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -57,7 +54,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Wprowadü token JWT: Bearer {token}"
+        Description = "Wprowad≈∏ token JWT: Bearer {token}"
     });
 
     options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
@@ -80,6 +77,17 @@ builder.Services.AddSingleton<GoogleMapsService>(provider =>
     var apiKey = builder.Configuration["GoogleMapsApiKey"];
     return new GoogleMapsService(apiKey);
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 
 builder.Services.AddAuthorization();
 
@@ -91,6 +99,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors("AllowLocalhost");
+
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -2,6 +2,7 @@
 using HotelBookingAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace HotelBookingAPI.Controllers
 {
@@ -11,7 +12,7 @@ namespace HotelBookingAPI.Controllers
     {
         private readonly HotelDbContext _context;
         private readonly GoogleMapsService _googleMapsService;
-        private readonly PayUService _payUService;
+        PayUService _payUService;
 
         public BookingController(HotelDbContext context, GoogleMapsService googleMapsService, PayUService payUService)
         {
@@ -23,10 +24,21 @@ namespace HotelBookingAPI.Controllers
         public async Task<IActionResult> CreatePayment()
         {
             var accessToken = await _payUService.GetAccessTokenAsync("300746", "2ee86a66e5d97e3fadc400c9f19b065d");
-            var paymentLink = await _payUService.CreateOrderAsync(accessToken);
+            var result = await _payUService.CreateOrderAsync(accessToken);
 
-            return Ok(new { paymentLink });
+            if (result.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                return Ok(new { paymentLink = result });
+            }
+
+            if (result.TrimStart().StartsWith("<!DOCTYPE html>", StringComparison.OrdinalIgnoreCase))
+            {
+                return Content(result, "text/html", Encoding.UTF8);
+            }
+
+            return BadRequest(new { error = result });
         }
+
 
         [HttpGet]
         public ActionResult<IEnumerable<Booking>> GetAll()
