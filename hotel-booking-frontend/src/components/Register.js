@@ -9,7 +9,7 @@ const Register = ({ onRegister }) => {
     e.preventDefault();
     try {
       await register(username, password);
-      onRegister(); // notify parent component
+      onRegister();
     } catch (error) {
       alert('Error registering');
     }
