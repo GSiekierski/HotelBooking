@@ -27,7 +27,7 @@ const App = () => {
                   <Link className="btn btn-primary" to="/login">Login</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="btn btn-secondary" to="/register">Register</Link>
+                  <Link className="btn btn-primary" to="/register">Register</Link>
                 </li>
               </>
             ) : (
@@ -36,10 +36,10 @@ const App = () => {
                   <Link className="btn btn-primary" to="/">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="btn btn-secondary" to="/create-booking">Create Booking</Link>
+                  <Link className="btn btn-primary" to="/create-booking">Create Booking</Link>
                 </li>
                 <li className="nav-item">
-                  <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                  <button className="btn btn-primary" onClick={handleLogout}>Logout</button>
                 </li>
               </>
             )}

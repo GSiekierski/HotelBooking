@@ -67,9 +67,9 @@ const handleCreatePayment = () => {
           <li key={booking.id}>
             <strong>{booking.guestName}</strong> - {booking.room.name} - {booking.startDate} to {booking.endDate}
             <div>
-              <Link to={`/update-booking/${booking.id}`} className="btn btn-warning">Update</Link>
-              <button onClick={() => handleDelete(booking.id)} className="btn btn-danger">Delete</button>
-              <button onClick={handleCreatePayment} className="btn btn-success">Create Payment</button>
+              <Link to={`/update-booking/${booking.id}`} className="btn btn-outline-info">Update</Link>
+              <button onClick={() => handleDelete(booking.id)} className="btn btn-outline-info">Delete</button>
+              <button onClick={handleCreatePayment} className="btn btn-outline-info">Create Payment</button>
             </div>
           </li>
         ))}
